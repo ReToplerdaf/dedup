@@ -1,0 +1,70 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:m="using:PhotoCommander.Models"
+             x:Class="PhotoCommander.Controls.FilePane">
+  <Border x:Name="PaneBorder" BorderThickness="2"
+          BorderBrush="{StaticResource NcInactiveBorder}"
+          Background="{StaticResource NcBack}">
+    <DockPanel>
+      <!-- строка пути -->
+      <DockPanel DockPanel.Dock="Top" Margin="2">
+        <ComboBox x:Name="DriveBox" Classes="nc" MinWidth="64" MaxWidth="160" DockPanel.Dock="Left"
+                  SelectionChanged="DriveBox_SelectionChanged" ToolTip.Tip="Диск"/>
+        <Button DockPanel.Dock="Right" Classes="nc" Content="…" Width="30" Margin="2,0,0,0"
+                HorizontalContentAlignment="Center"
+                Click="Browse_Click" ToolTip.Tip="Выбрать папку"/>
+        <Button DockPanel.Dock="Right" Classes="nc" Content="↑" Width="30" Margin="2,0,0,0"
+                HorizontalContentAlignment="Center"
+                Click="Up_Click" ToolTip.Tip="Вверх (Backspace)"/>
+        <TextBox x:Name="PathBox" Margin="2,0,0,0" VerticalContentAlignment="Center"
+                 Background="{StaticResource NcBack}" Foreground="#FFFF55" CaretBrush="White"
+                 BorderBrush="#00A8A8" FontFamily="{StaticResource NcMono}" KeyDown="PathBox_KeyDown"
+                 ToolTip.Tip="Введите путь и нажмите Enter">
+          <TextBox.Styles>
+            <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+              <Setter Property="Background" Value="#000060"/>
+            </Style>
+            <Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
+              <Setter Property="Background" Value="#000060"/>
+            </Style>
+            <Style Selector="TextBox:focus, TextBox:pointerover">
+              <Setter Property="Foreground" Value="#FFFF55"/>
+            </Style>
+          </TextBox.Styles>
+        </TextBox>
+      </DockPanel>
+
+      <!-- строка состояния панели -->
+      <TextBlock x:Name="StatusLine" DockPanel.Dock="Bottom" Margin="4,2"
+                 Foreground="{StaticResource NcText}" FontFamily="{StaticResource NcMono}"
+                 TextTrimming="CharacterEllipsis"/>
+
+      <!-- заголовки колонок -->
+      <Grid DockPanel.Dock="Top" ColumnDefinitions="*,90,130" Margin="6,2,6,2"
+            TextElement.Foreground="#FFFF55" TextElement.FontFamily="{StaticResource NcMono}">
+        <TextBlock Grid.Column="0" Text="Имя"/>
+        <TextBlock Grid.Column="1" Text="Размер" TextAlignment="Right" Margin="0,0,8,0"/>
+        <TextBlock Grid.Column="2" Text="Дата"/>
+      </Grid>
+
+      <!-- список файлов -->
+      <ListBox x:Name="FileList" Classes="nc" Background="{StaticResource NcBack}" BorderThickness="0"
+               FontFamily="{StaticResource NcMono}" FontSize="13"
+               SelectionMode="Multiple" IsTextSearchEnabled="True"
+               DoubleTapped="FileList_DoubleTapped"
+               KeyDown="FileList_KeyDown"
+               SelectionChanged="FileList_SelectionChanged"
+               ContainerPrepared="FileList_ContainerPrepared">
+        <ListBox.ItemTemplate>
+          <DataTemplate x:DataType="m:FileEntry">
+            <Grid ColumnDefinitions="*,90,130">
+              <TextBlock Grid.Column="0" Text="{Binding DisplayName}" TextTrimming="CharacterEllipsis"/>
+              <TextBlock Grid.Column="1" Text="{Binding SizeText}" TextAlignment="Right" Margin="0,0,8,0"/>
+              <TextBlock Grid.Column="2" Text="{Binding DateText}"/>
+            </Grid>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </DockPanel>
+  </Border>
+</UserControl>

@@ -1,0 +1,84 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:v="using:PhotoCommander.Views"
+        x:Class="PhotoCommander.Views.DuplicatesWindow"
+        Title="Похожие фото" Height="780" Width="1250"
+        WindowStartupLocation="CenterOwner" Background="#000080">
+  <DockPanel>
+    <Border DockPanel.Dock="Top" Background="#C0C0C0" Padding="8" BorderBrush="Black" BorderThickness="0,0,0,1">
+      <StackPanel>
+        <TextBlock x:Name="Summary" FontWeight="Bold" TextWrapping="Wrap"/>
+        <WrapPanel Margin="0,6,0,0">
+          <Button Content="На весь экран" Classes="cmd" Margin="0,0,6,0" Click="FullScreen_Click"
+                  ToolTip.Tip="Смотреть группы на весь экран: увеличение, сравнение двух фото рядом"/>
+          <Button Content="Отметить всё, кроме лучших" Classes="cmd" Margin="0,0,6,0" Click="MarkAuto_Click"/>
+          <Button Content="Снять все отметки" Classes="cmd" Margin="0,0,6,0" Click="UnmarkAll_Click"/>
+          <Button Content="Переместить отмеченные…" Classes="cmd" Margin="0,0,6,0" Click="MoveMarked_Click"/>
+          <Button Content="Отмеченные в Корзину" Classes="cmd" Margin="0,0,6,0" Click="RecycleMarked_Click"/>
+          <Button Content="Сохранить отчёт CSV" Classes="cmd" Margin="0,0,6,0" Click="SaveCsv_Click"/>
+          <Button Content="? Справка" Classes="cmd" Margin="0,0,6,0" Click="Help_Click" ToolTip.Tip="F1"/>
+        </WrapPanel>
+        <TextBlock Margin="0,4,0,0" Foreground="#303030" TextWrapping="Wrap"
+                   Text="Красная рамка — отмечено (будет перемещено/удалено), зелёная — останется. «★ Оставить это» — оставить только это фото в группе. Двойной щелчок по фото — на весь экран (там же можно сравнить два фото рядом)."/>
+      </StackPanel>
+    </Border>
+
+    <ListBox x:Name="GroupList" Background="#000080" BorderThickness="0"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+      <ListBox.Styles>
+        <!-- группы не выделяются, это просто список карточек -->
+        <Style Selector="ListBoxItem">
+          <Setter Property="Padding" Value="6,4"/>
+          <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        </Style>
+        <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter, ListBoxItem:selected /template/ ContentPresenter">
+          <Setter Property="Background" Value="Transparent"/>
+        </Style>
+      </ListBox.Styles>
+
+      <ListBox.ItemTemplate>
+        <DataTemplate x:DataType="v:DupGroupVm">
+          <Border BorderBrush="#00A8A8" BorderThickness="1" Padding="6">
+            <StackPanel>
+              <TextBlock Text="{Binding Header}" Foreground="#FFFF55" FontWeight="Bold" Margin="2,0,0,4"/>
+              <ItemsControl ItemsSource="{Binding Items}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <WrapPanel/>
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate x:DataType="v:DupItemVm">
+                    <Border Classes="card" Classes.marked="{Binding Marked}"
+                            Width="240" Margin="4" Padding="6" Background="#101060"
+                            BorderThickness="3" Tag="{Binding}" DoubleTapped="Card_DoubleTapped">
+                      <StackPanel>
+                        <Grid Height="170" Background="Black">
+                          <Image Source="{Binding Thumb}" Stretch="Uniform"/>
+                          <TextBlock Text="{Binding Badge}" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                     Background="#CC000000" Foreground="White" Padding="4,1"/>
+                        </Grid>
+                        <TextBlock Text="{Binding Name}" Foreground="White" FontWeight="Bold" Margin="0,4,0,0"
+                                   TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding FullPath}"/>
+                        <TextBlock Text="{Binding Folder}" Foreground="#80C0C0"
+                                   TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding Folder}"/>
+                        <TextBlock Text="{Binding Info}" Foreground="#00FFFF"/>
+                        <TextBlock Text="{Binding When}" Foreground="#00FFFF"/>
+                        <TextBlock Text="{Binding Reason}" Foreground="#A0A0A0" FontStyle="Italic"/>
+                        <DockPanel Margin="0,4,0,0">
+                          <Button DockPanel.Dock="Right" Content="★ Оставить это"
+                                  Tag="{Binding}" Click="KeepThis_Click"/>
+                          <CheckBox IsChecked="{Binding Marked}" Content="В дубликаты" VerticalAlignment="Center"/>
+                        </DockPanel>
+                      </StackPanel>
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+          </Border>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+  </DockPanel>
+</Window>
