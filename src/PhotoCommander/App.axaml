@@ -1,0 +1,125 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="PhotoCommander.App"
+             RequestedThemeVariant="Light">
+  <Application.Resources>
+    <!-- Палитра в духе Norton Commander -->
+    <SolidColorBrush x:Key="NcBack" Color="#000080"/>
+    <SolidColorBrush x:Key="NcText" Color="#00FFFF"/>
+    <SolidColorBrush x:Key="NcActiveBorder" Color="#55FFFF"/>
+    <SolidColorBrush x:Key="NcInactiveBorder" Color="#303070"/>
+    <SolidColorBrush x:Key="NcPanel" Color="#C0C0C0"/>
+    <FontFamily x:Key="NcMono">Consolas, Cascadia Mono, DejaVu Sans Mono, Liberation Mono, Menlo, monospace</FontFamily>
+  </Application.Resources>
+
+  <Application.Styles>
+    <FluentTheme/>
+
+    <!-- кнопки команд -->
+    <Style Selector="Button.cmd">
+      <Setter Property="Margin" Value="0,3"/>
+      <Setter Property="Padding" Value="8,5"/>
+      <Setter Property="HorizontalAlignment" Value="Stretch"/>
+      <Setter Property="HorizontalContentAlignment" Value="Left"/>
+      <Setter Property="Background" Value="#00A8A8"/>
+      <Setter Property="Foreground" Value="Black"/>
+      <Setter Property="BorderBrush" Value="Black"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="CornerRadius" Value="0"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+    <Style Selector="Button.cmd:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="#55FFFF"/>
+      <Setter Property="Foreground" Value="Black"/>
+    </Style>
+    <Style Selector="Button.cmd:pressed /template/ ContentPresenter">
+      <Setter Property="Background" Value="#008080"/>
+    </Style>
+
+    <!-- рамка-группа вместо GroupBox -->
+    <Style Selector="Border.group">
+      <Setter Property="Margin" Value="0,4"/>
+      <Setter Property="Padding" Value="6"/>
+      <Setter Property="BorderBrush" Value="#404040"/>
+      <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+    <Style Selector="TextBlock.groupHeader">
+      <Setter Property="FontWeight" Value="Bold"/>
+      <Setter Property="Margin" Value="0,0,0,4"/>
+    </Style>
+
+    <!-- маленькие кнопки и список дисков в строке пути -->
+    <Style Selector="Button.nc, ComboBox.nc">
+      <Setter Property="Background" Value="#00A8A8"/>
+      <Setter Property="Foreground" Value="Black"/>
+      <Setter Property="BorderBrush" Value="Black"/>
+      <Setter Property="CornerRadius" Value="0"/>
+      <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    <Style Selector="Button.nc:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="#55FFFF"/>
+      <Setter Property="Foreground" Value="Black"/>
+    </Style>
+    <Style Selector="ComboBox.nc:pointerover /template/ Border#Background">
+      <Setter Property="Background" Value="#55FFFF"/>
+    </Style>
+
+    <!-- строки файловой панели -->
+    <Style Selector="ListBox.nc ListBoxItem">
+      <Setter Property="Padding" Value="4,2"/>
+      <Setter Property="MinHeight" Value="0"/>
+      <Setter Property="Foreground" Value="#00FFFF"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="FocusAdorner" Value="{x:Null}"/>
+    </Style>
+    <Style Selector="ListBox.nc ListBoxItem.dir">
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    <Style Selector="ListBox.nc ListBoxItem.img">
+      <Setter Property="Foreground" Value="#FFFF55"/>
+    </Style>
+    <Style Selector="ListBox.nc ListBoxItem:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="#202090"/>
+    </Style>
+    <!-- выделение: в активной панели — яркое, во второй — приглушённое -->
+    <Style Selector="ListBox.nc ListBoxItem:selected /template/ ContentPresenter,
+                     ListBox.nc ListBoxItem:selected:pointerover /template/ ContentPresenter,
+                     ListBox.nc ListBoxItem:selected:focus /template/ ContentPresenter,
+                     ListBox.nc ListBoxItem:selected:pressed /template/ ContentPresenter">
+      <Setter Property="Background" Value="#30307A"/>
+    </Style>
+    <Style Selector="ListBox.nc.active ListBoxItem:selected /template/ ContentPresenter,
+                     ListBox.nc.active ListBoxItem:selected:pointerover /template/ ContentPresenter,
+                     ListBox.nc.active ListBoxItem:selected:focus /template/ ContentPresenter,
+                     ListBox.nc.active ListBoxItem:selected:pressed /template/ ContentPresenter">
+      <Setter Property="Background" Value="#00A8A8"/>
+      <Setter Property="Foreground" Value="Black"/>
+    </Style>
+
+    <!-- карточки в окне дубликатов -->
+    <Style Selector="Border.card">
+      <Setter Property="BorderBrush" Value="#55FF55"/>
+    </Style>
+    <Style Selector="Border.card.marked">
+      <Setter Property="BorderBrush" Value="#FF5555"/>
+    </Style>
+    <Style Selector="Border.card CheckBox">
+      <Setter Property="MinWidth" Value="0"/>
+      <Setter Property="Padding" Value="4,0,0,0"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Foreground" Value="White"/>
+    </Style>
+    <Style Selector="Border.card Button">
+      <Setter Property="Background" Value="#00A8A8"/>
+      <Setter Property="Foreground" Value="Black"/>
+      <Setter Property="CornerRadius" Value="0"/>
+      <Setter Property="Padding" Value="5,2"/>
+      <Setter Property="FontSize" Value="12"/>
+    </Style>
+    <Style Selector="Border.card Button:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="#55FFFF"/>
+      <Setter Property="Foreground" Value="Black"/>
+    </Style>
+  </Application.Styles>
+</Application>

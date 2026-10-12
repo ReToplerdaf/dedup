@@ -1,0 +1,104 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="using:PhotoCommander.Controls"
+        x:Class="PhotoCommander.MainWindow"
+        Title="Photo Commander" Height="800" Width="1400" MinWidth="1000" MinHeight="560"
+        WindowStartupLocation="CenterScreen" Background="#000060">
+  <Grid RowDefinitions="*,Auto,Auto" ColumnDefinitions="*,290,*">
+
+    <!-- ЛЕВАЯ ПАНЕЛЬ -->
+    <c:FilePane x:Name="LeftPane" Grid.Column="0" Margin="4,4,2,4"/>
+
+    <!-- ЦЕНТР: команды -->
+    <Border Grid.Column="1" Margin="2,4" Background="{StaticResource NcPanel}"
+            BorderBrush="Black" BorderThickness="1">
+      <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel x:Name="CommandsPanel" Margin="8">
+          <TextBlock x:Name="ActiveLabel" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,4"/>
+
+          <Border Classes="group">
+            <StackPanel>
+              <TextBlock Classes="groupHeader" Text="Файлы"/>
+              <Button x:Name="BtnCopy" Classes="cmd" Click="Copy_Click"/>
+              <Button x:Name="BtnMove" Classes="cmd" Click="Move_Click"/>
+              <Button Content="F7   Новая папка" Classes="cmd" Click="MkDir_Click"/>
+              <Button Content="F8   В Корзину" Classes="cmd" Click="Recycle_Click"/>
+              <Button x:Name="BtnSame" Classes="cmd" Click="SameFolder_Click"/>
+            </StackPanel>
+          </Border>
+
+          <Border Classes="group">
+            <StackPanel>
+              <TextBlock Classes="groupHeader" Text="Поиск похожих фото"/>
+              <CheckBox x:Name="RecursiveCheck" Content="Включая подпапки" IsChecked="True"/>
+
+              <TextBlock Margin="0,6,0,0"
+                         Text="{Binding #ThrSlider.Value, StringFormat='Порог сходства: {0:0}'}"/>
+              <Slider x:Name="ThrSlider" Minimum="0" Maximum="20" Value="6"
+                      TickFrequency="1" IsSnapToTickEnabled="True"/>
+              <TextBlock Text="0 — почти одинаковые, 10+ — очень мягко" FontSize="11"
+                         Foreground="#404040" TextWrapping="Wrap"/>
+
+              <TextBlock Text="Снятые подряд — окно, секунд:" Margin="0,8,0,0"/>
+              <TextBox x:Name="TimeWindowBox" Text="10" Margin="0,2"
+                       ToolTip.Tip="Фото, снятые с такой разницей, сравниваются мягче. 0 — выключить."/>
+              <TextBlock Margin="0,4,0,0"
+                         Text="{Binding #TimeThrSlider.Value, StringFormat='Мягкий порог для них: {0:0}'}"/>
+              <Slider x:Name="TimeThrSlider" Minimum="0" Maximum="24" Value="14"
+                      TickFrequency="1" IsSnapToTickEnabled="True"/>
+              <CheckBox x:Name="MtimeCheck" Content="Нет EXIF — брать дату файла"
+                        ToolTip.Tip="Осторожно: у скопированных файлов дата изменения часто одинаковая"/>
+
+              <Button Content="Найти похожие" Classes="cmd" FontSize="14" Click="FindSimilar_Click"
+                      ToolTip.Tip="Ищет в папке активной панели"/>
+            </StackPanel>
+          </Border>
+
+          <Border Classes="group">
+            <StackPanel>
+              <TextBlock Classes="groupHeader" Text="Сортировка по датам"/>
+              <TextBlock Text="Шаблон папок:"/>
+              <ComboBox x:Name="PatternBox" Margin="0,2" HorizontalAlignment="Stretch"/>
+              <StackPanel Orientation="Horizontal" Margin="0,4">
+                <RadioButton x:Name="CopyRadio" GroupName="SortMode" Content="Копировать" IsChecked="True" Margin="0,0,12,0"/>
+                <RadioButton x:Name="MoveRadio" GroupName="SortMode" Content="Перемещать"/>
+              </StackPanel>
+              <CheckBox x:Name="SortRecursiveCheck" Content="Включая подпапки" IsChecked="True"/>
+              <CheckBox x:Name="SkipDupsCheck" Content="Пропускать дубликаты"
+                        ToolTip.Tip="Сначала найти похожие (настройки выше) и разложить только лучшие копии"/>
+              <Button x:Name="BtnSort" Classes="cmd" FontSize="14" Click="SortDates_Click"
+                      ToolTip.Tip="Из папки активной панели — в папку другой панели"/>
+            </StackPanel>
+          </Border>
+
+          <Border Classes="group">
+            <StackPanel>
+              <TextBlock Classes="groupHeader" Text="Просмотр"/>
+              <Border Background="Black" Height="180">
+                <Image x:Name="PreviewImage" Stretch="Uniform"/>
+              </Border>
+              <TextBlock x:Name="PreviewInfo" TextWrapping="Wrap" Margin="0,4,0,0"/>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </ScrollViewer>
+    </Border>
+
+    <!-- ПРАВАЯ ПАНЕЛЬ -->
+    <c:FilePane x:Name="RightPane" Grid.Column="2" Margin="2,4,4,4"/>
+
+    <!-- строка состояния -->
+    <DockPanel Grid.Row="1" Grid.ColumnSpan="3" Background="#C0C0C0">
+      <Button x:Name="CancelBtn" DockPanel.Dock="Right" Content="Отмена" Margin="4,2" Padding="12,2"
+              IsVisible="False" Click="Cancel_Click"/>
+      <ProgressBar x:Name="Bar" DockPanel.Dock="Right" Width="280" Height="16" Margin="4,0"/>
+      <TextBlock x:Name="StatusText" Margin="6,4" VerticalAlignment="Center" Text="Готово"
+                 TextTrimming="CharacterEllipsis"/>
+    </DockPanel>
+
+    <!-- подсказка по клавишам, как в NC -->
+    <TextBlock Grid.Row="2" Grid.ColumnSpan="3" Background="Black" Foreground="#00FFFF"
+               FontFamily="{StaticResource NcMono}" Padding="6,3"
+               Text="Tab Панель   Enter Открыть   Backspace Вверх   F5 Копия   F6 Перенос   F7 Папка   F8 Корзина   Ctrl+R Обновить"/>
+  </Grid>
+</Window>
