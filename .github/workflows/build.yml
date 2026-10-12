@@ -61,7 +61,6 @@ jobs:
 
   publish:
     needs: [test, python]
-    if: github.event_name != 'pull_request'
     strategy:
       matrix:
         rid: [win-x64, linux-x64]
