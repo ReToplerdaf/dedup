@@ -9,14 +9,17 @@
       <StackPanel>
         <TextBlock x:Name="Summary" FontWeight="Bold" TextWrapping="Wrap"/>
         <WrapPanel Margin="0,6,0,0">
+          <Button Content="На весь экран" Classes="cmd" Margin="0,0,6,0" Click="FullScreen_Click"
+                  ToolTip.Tip="Смотреть группы на весь экран: увеличение, сравнение двух фото рядом"/>
           <Button Content="Отметить всё, кроме лучших" Classes="cmd" Margin="0,0,6,0" Click="MarkAuto_Click"/>
           <Button Content="Снять все отметки" Classes="cmd" Margin="0,0,6,0" Click="UnmarkAll_Click"/>
           <Button Content="Переместить отмеченные…" Classes="cmd" Margin="0,0,6,0" Click="MoveMarked_Click"/>
           <Button Content="Отмеченные в Корзину" Classes="cmd" Margin="0,0,6,0" Click="RecycleMarked_Click"/>
           <Button Content="Сохранить отчёт CSV" Classes="cmd" Margin="0,0,6,0" Click="SaveCsv_Click"/>
+          <Button Content="? Справка" Classes="cmd" Margin="0,0,6,0" Click="Help_Click" ToolTip.Tip="F1"/>
         </WrapPanel>
         <TextBlock Margin="0,4,0,0" Foreground="#303030" TextWrapping="Wrap"
-                   Text="Красная рамка — отмечено (будет перемещено/удалено), зелёная — останется. «★ Оставить это» — оставить только это фото в группе. Двойной щелчок по фото — открыть."/>
+                   Text="Красная рамка — отмечено (будет перемещено/удалено), зелёная — останется. «★ Оставить это» — оставить только это фото в группе. Двойной щелчок по фото — на весь экран (там же можно сравнить два фото рядом)."/>
       </StackPanel>
     </Border>
 

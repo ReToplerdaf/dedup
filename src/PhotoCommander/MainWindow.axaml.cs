@@ -65,7 +65,7 @@ public partial class MainWindow : Window
 
         bool left = ReferenceEquals(pane, LeftPane);
         string arrow = left ? "→" : "←";
-        ActiveLabel.Text = left ? "Источник: ЛЕВАЯ панель  →" : "←  Источник: ПРАВАЯ панель";
+        ActiveLabel.Text = left ? "Источник: ЛЕВАЯ  →" : "←  Источник: ПРАВАЯ";
         BtnCopy.Content = $"F5   Копировать  {arrow}";
         BtnMove.Content = $"F6   Переместить  {arrow}";
         BtnSame.Content = $"=    Та же папка  {arrow}";
@@ -90,6 +90,10 @@ public partial class MainWindow : Window
                 e.Handled = true;
                 break;
             }
+            case Key.F1:
+                Help.Show(this);
+                e.Handled = true;
+                break;
             case Key.F5:
                 _ = CopyMove(false);
                 e.Handled = true;
@@ -192,6 +196,8 @@ public partial class MainWindow : Window
         RefreshBoth();
         _active.FocusList();
     }
+
+    void Help_Click(object? sender, RoutedEventArgs e) => Help.Show(this);
 
     void SameFolder_Click(object? sender, RoutedEventArgs e)
     {

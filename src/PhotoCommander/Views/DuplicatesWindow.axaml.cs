@@ -1,10 +1,11 @@
 using System.Collections.ObjectModel;
 using System.Text;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
-using PhotoCommander.Controls;
+using Avalonia.VisualTree;
 using PhotoCommander.Models;
 using PhotoCommander.Services;
 
@@ -35,6 +36,10 @@ public partial class DuplicatesWindow : Window
         }
         GroupList.ItemsSource = _groups;
         UpdateSummary();
+        KeyDown += (_, e) =>
+        {
+            if (e.Key == Key.F1) { Help.Show(this); e.Handled = true; }
+        };
     }
 
     IEnumerable<DupItemVm> AllItems => _groups.SelectMany(g => g.Items);
@@ -67,7 +72,24 @@ public partial class DuplicatesWindow : Window
 
     void Card_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        if ((sender as Control)?.Tag is DupItemVm item) FilePane.OpenFile(this, item.FullPath);
+        // двойной щелчок по галочке или кнопке — это не просьба открыть фото
+        if (e.Source is Visual v && v.FindAncestorOfType<Button>(true) == null && v.FindAncestorOfType<CheckBox>(true) == null
+            && (sender as Control)?.Tag is DupItemVm item)
+            OpenViewer(item.Group, item);
+    }
+
+    void FullScreen_Click(object? sender, RoutedEventArgs e) => OpenViewer(null, null);
+
+    void Help_Click(object? sender, RoutedEventArgs e) => Help.Show(this);
+
+    /// <summary>Открыть просмотр на весь экран; отметки в нём сразу видны и здесь.</summary>
+    public ViewerWindow? OpenViewer(DupGroupVm? group, DupItemVm? item)
+    {
+        if (_groups.Count == 0) return null;
+        var viewer = new ViewerWindow(_groups, group, item);
+        viewer.Closed += (_, _) => Activate();
+        viewer.Show(this);
+        return viewer;
     }
 
     /// <summary>Отмеченные элементы с проверкой «не отмечена ли вся группа».</summary>

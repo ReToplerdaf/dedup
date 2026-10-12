@@ -14,7 +14,11 @@
             BorderBrush="Black" BorderThickness="1">
       <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel x:Name="CommandsPanel" Margin="8">
-          <TextBlock x:Name="ActiveLabel" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,4"/>
+          <DockPanel Margin="0,0,0,4">
+            <Button DockPanel.Dock="Right" Content="? Справка" Classes="cmd" Margin="4,0,0,0" Padding="6,2"
+                    HorizontalAlignment="Right" Click="Help_Click" ToolTip.Tip="Как пользоваться (F1)"/>
+            <TextBlock x:Name="ActiveLabel" FontWeight="Bold" TextWrapping="Wrap" VerticalAlignment="Center"/>
+          </DockPanel>
 
           <Border Classes="group">
             <StackPanel>
@@ -99,6 +103,6 @@
     <!-- подсказка по клавишам, как в NC -->
     <TextBlock Grid.Row="2" Grid.ColumnSpan="3" Background="Black" Foreground="#00FFFF"
                FontFamily="{StaticResource NcMono}" Padding="6,3"
-               Text="Tab Панель   Enter Открыть   Backspace Вверх   F5 Копия   F6 Перенос   F7 Папка   F8 Корзина   Ctrl+R Обновить"/>
+               Text="F1 Справка   Tab Панель   Enter Открыть   Backspace Вверх   F5 Копия   F6 Перенос   F7 Папка   F8 Корзина   Ctrl+R Обновить"/>
   </Grid>
 </Window>
